@@ -25,7 +25,7 @@ export const validateProduct = (product) => {
         errors.quantity = "Số lượng không được để trống";
     } else {
         const quantity = Number(rawQuantity);
-        if(Number.isNaN(rawQuantity) || quantity < 0 || quantity > 99999) {
+        if(Number.isNaN(quantity) || quantity < 0 || quantity > 99999) {
             errors.quantity = "Số lượng phải từ 0 đến 99,999";
         }
     }
@@ -36,7 +36,7 @@ export const validateProduct = (product) => {
 
     const category = product.category ? product.category.trim() : "";
     if(!category) {
-        errors.category = "Loại sản phẩm không được để trống";
+        errors.category = "Danh mục không được để trống";
     }
 
     return errors;

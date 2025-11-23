@@ -12,10 +12,11 @@ const emptyForm = {
 
 export default function ProductForm({ product, onSave, onCancel }) {
   const [form, setForm] = useState(emptyForm);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (product) {
-      // merge để tránh thiếu field description / quantity...
+      // merge cho chắc đủ field
       setForm({ ...emptyForm, ...product });
     } else {
       setForm(emptyForm);
@@ -28,13 +29,17 @@ export default function ProductForm({ product, onSave, onCancel }) {
   };
 
   const handleSubmit = () => {
-      const errors = validateProduct(form);
-      if(Object.keys(errors).length > 0) {
-          console.log("Validation errors: ", errors);
-          return;
-      }
+    // 1. Gọi validateProduct
+    const validationErrors = validateProduct(form);
+    setErrors(validationErrors);
 
-      const payload = {
+    // 2. Nếu có lỗi thì không gọi onSave
+    if (Object.keys(validationErrors).length > 0) {
+      return;
+    }
+
+    // 3. Chuẩn hóa dữ liệu trước khi gửi
+    const payload = {
       ...form,
       quantity:
         form.quantity === "" || form.quantity == null
@@ -43,6 +48,7 @@ export default function ProductForm({ product, onSave, onCancel }) {
       price:
         form.price === "" || form.price == null ? null : Number(form.price),
     };
+
     onSave(payload);
   };
 
@@ -51,46 +57,55 @@ export default function ProductForm({ product, onSave, onCancel }) {
       <h2>{product ? "Sửa sản phẩm" : "Thêm sản phẩm"}</h2>
 
       <div>
-        <label>Tên:</label>
+        <label htmlFor="name">Tên:</label>
         <input
+          id="name"
           name="name"
           value={form.name || ""}
           onChange={change}
         />
+        {errors.name && <p role="alert">{errors.name}</p>}
       </div>
 
       <div>
-        <label>Số lượng:</label>
+        <label htmlFor="quantity">Số lượng:</label>
         <input
+          id="quantity"
           name="quantity"
           type="number"
           value={form.quantity ?? ""}
           onChange={change}
         />
+        {errors.quantity && <p role="alert">{errors.quantity}</p>}
       </div>
 
       <div>
-        <label>Giá:</label>
+        <label htmlFor="price">Giá:</label>
         <input
+          id="price"
           name="price"
           type="number"
           value={form.price ?? ""}
           onChange={change}
         />
+        {errors.price && <p role="alert">{errors.price}</p>}
       </div>
 
       <div>
-        <label>Mô tả:</label>
+        <label htmlFor="description">Mô tả:</label>
         <textarea
+          id="description"
           name="description"
           value={form.description || ""}
           onChange={change}
         />
+        {errors.description && <p role="alert">{errors.description}</p>}
       </div>
 
       <div>
-        <label>Danh mục:</label>
+        <label htmlFor="category">Danh mục:</label>
         <select
+          id="category"
           name="category"
           value={form.category || ""}
           onChange={change}
@@ -100,6 +115,7 @@ export default function ProductForm({ product, onSave, onCancel }) {
           <option value="Tea">Tea</option>
           <option value="Milk">Milk</option>
         </select>
+        {errors.category && <p role="alert">{errors.category}</p>}
       </div>
 
       <button onClick={handleSubmit}>Lưu</button>
