@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { validateProduct } from "../utils/productValidation";
 
 const emptyForm = {
   id: null,
@@ -27,7 +28,13 @@ export default function ProductForm({ product, onSave, onCancel }) {
   };
 
   const handleSubmit = () => {
-    const payload = {
+      const errors = validateProduct(form);
+      if(Object.keys(errors).length > 0) {
+          console.log("Validation errors: ", errors);
+          return;
+      }
+
+      const payload = {
       ...form,
       quantity:
         form.quantity === "" || form.quantity == null
