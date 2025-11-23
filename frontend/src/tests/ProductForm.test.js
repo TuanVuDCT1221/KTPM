@@ -123,4 +123,96 @@ describe("ProductForm", () => {
         expect(onSave).not.toHaveBeenCalled();
         expect(screen.getByText("Danh mục không được để trống")).toBeInTheDocument();
     });
+
+    it("TCF6: Quantity > 99999 -> không gọi onSave và hiển thị lỗi", () => {
+        const onSave = jest.fn();
+
+        render(<ProductForm product={null} onSave={onSave} onCancel={jest.fn()} />);
+
+        fireEvent.change(screen.getByLabelText("Tên:"), {
+            target: {value: "Cà phê sữa"},
+        });
+        fireEvent.change(screen.getByLabelText("Số lượng:"), {
+            target: {value: "100000"},
+        });
+        fireEvent.change(screen.getByLabelText("Giá:"), {
+            target: {value: "30000"},
+        });
+        fireEvent.change(screen.getByLabelText("Danh mục:"), {
+            target: {value: "Coffee"},
+        });
+
+        fireEvent.click(screen.getByText("Lưu"));
+
+        expect(onSave).not.toHaveBeenCalled();
+        expect(screen.getByText("Số lượng phải từ 0 đến 99,999")).toBeInTheDocument();
+    });
+
+    it("TCF7: Description > 500 ký tự, -> không gọi onSave và hiển thị lỗi", () => {
+        const onSave = jest.fn();
+        const longDescription = "a".repeat(501);    
+
+        render(<ProductForm product={null} onSave={onSave} onCancel={jest.fn()} />);
+
+        fireEvent.change(screen.getByLabelText("Tên:"), {
+            target: {value: "Cà phê sữa"},
+        });
+        fireEvent.change(screen.getByLabelText("Số lượng:"), {
+            target: {value: "10"},
+        });
+        fireEvent.change(screen.getByLabelText("Giá:"), {
+            target: {value: "30000"},
+        });
+        fireEvent.change(screen.getByLabelText("Mô tả:"), {
+            target: {value: longDescription},
+        });
+        fireEvent.change(screen.getByLabelText("Danh mục:"), {
+            target: {value: "Coffee"},
+        });
+
+        fireEvent.click(screen.getByText("Lưu"));
+
+        expect(onSave).not.toHaveBeenCalled();
+        expect(screen.getByText("Mô tả phải nhỏ hơn hoặc bằng 500 ký tự")).toBeInTheDocument();
+    });
+
+    it("TCF8: Edit sản phẩm với quantity = null -> không gọi onSave và hiển thị lỗi", () => {
+        const onSave = jest.fn();
+        const product = {
+            id: 1,
+            name: "Cà phê sữa",
+            quantity: null, 
+            price: 20000, 
+            description: "Cà phê sữa ngon lắm",
+            category: "Coffee",
+        };   
+
+        render(<ProductForm product={product} onSave={onSave} onCancel={jest.fn()} />);
+
+
+        fireEvent.click(screen.getByText("Lưu"));
+
+        expect(onSave).not.toHaveBeenCalled();
+        expect(screen.getByText("Số lượng không được để trống")).toBeInTheDocument();
+    });
+
+    it("TCF9: Edit sản phẩm với price = null -> không gọi onSave và hiển thị lỗi", () => {
+        const onSave = jest.fn();
+        const product = {
+            id: 1,
+            name: "Cà phê sữa",
+            quantity: 10, 
+            price: null, 
+            description: "Cà phê sữa ngon lắm",
+            category: "Coffee",
+        };   
+
+        render(<ProductForm product={product} onSave={onSave} onCancel={jest.fn()} />);
+
+
+        fireEvent.click(screen.getByText("Lưu"));
+
+        expect(onSave).not.toHaveBeenCalled();
+        expect(screen.getByText("Giá không được để trống")).toBeInTheDocument();
+    });
 });
