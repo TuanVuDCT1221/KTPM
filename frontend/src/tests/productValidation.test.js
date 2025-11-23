@@ -1,4 +1,5 @@
 import {validateProduct} from "../utils/productValidation.js";
+import { describe, it, expect } from "@jest/globals";
 
 const baseProduct = {
     name: "Cà phê sữa",
@@ -8,4 +9,4 @@ const baseProduct = {
     category: "Coffee",
 };
 
-
+describe
