@@ -6,6 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="1dcddad7-d052-4eb1-98b7-adb641e8566f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ProductForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProductForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/tests/ProductForm.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/tests/ProductForm.test.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/tests/productValidation.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/tests/productValidation.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +50,7 @@
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "nhuan",
+    "git-widget-placeholder": "Cherry-picking in nhuan",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "D:/GitHub/KTPM",
@@ -92,6 +94,7 @@
       <updated>1763744710932</updated>
       <workItem from="1763752943933" duration="1463000" />
       <workItem from="1763908752980" duration="539000" />
+      <workItem from="1764167866098" duration="166000" />
     </task>
     <servers />
   </component>

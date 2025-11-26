@@ -1,11 +1,11 @@
 import {validateProduct} from "../utils/productValidation.js";
 
 const baseProduct = {
-    name: "Cà phê sữa",
-    price: 20000,
+    name: "Laptop Dell XPS 13",
+    price: 25000000,
     quantity: 10,
-    description: "Cà phê sữa siêu ngon",
-    category: "Coffee",
+    description: "Ultrabook 13 inch mỏng nhẹ",
+    category: "Ultrabook",
 };
 
 describe("Validate Product", () => {
