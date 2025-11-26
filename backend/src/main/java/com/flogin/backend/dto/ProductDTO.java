@@ -28,6 +28,6 @@ public class ProductDTO {
     @Size(max = 500, message = "Mô tả phải nhỏ hơn hoặc bằng 500 ký tự")
     private String description;
 
-    @NotBlank(message = "Loại sản phẩm không được để trống")
+    @NotBlank(message = "Danh mục không được để trống")
     private String category;
 }
