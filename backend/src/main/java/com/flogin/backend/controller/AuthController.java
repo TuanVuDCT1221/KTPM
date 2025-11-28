@@ -1,6 +1,7 @@
 package com.flogin.backend.controller;
 
 import com.flogin.backend.dto.LoginRequest;
+import com.flogin.backend.dto.LoginResponse;
 import com.flogin.backend.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +16,24 @@ public class AuthController {
     private AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
-        boolean isValid = authService.login(request);
-        if (isValid) {
-            return ResponseEntity.ok().body("Đăng nhập thành công!");
-        } else {
-            return ResponseEntity.status(401).body("Email hoặc mật khẩu sai!");
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+        try {
+            String token = authService.authenticate(request.getUsername(), request.getPassword());
+
+            LoginResponse successResponse = new LoginResponse(
+                    true,
+                    "Đăng nhập thành công!", 
+                    token,
+                    null 
+            );
+            return ResponseEntity.ok(successResponse);
+        } catch (RuntimeException e) {
+            LoginResponse errorResponse = new LoginResponse(
+                    false,
+                    e.getMessage(), 
+                    null,
+                    null);
+            return ResponseEntity.status(401).body(errorResponse);
         }
     }
 }
