@@ -1,0 +1,66 @@
+name: Login Tests CI/CD
+
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-frontend:
+    runs-on: ubuntu-latest
+    
+    services:
+      backend:
+        image: your-backend-image:latest 
+        ports:
+          - 8080:8080
+        options: >-
+          --health-cmd "curl --fail http://localhost:8080/actuator/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Frontend dependencies
+        run: |
+          cd frontend
+          npm install
+
+      - name: Run Login Unit & Integration Tests
+        run: |
+          cd frontend
+          # Chạy tất cả file test có chứa "login" trong tên
+          npm test -- --testPathPattern="login" --json --outputFile=cypress/reports/jest-login-report.json
+
+      - name: Build Frontend for E2E
+        run: |
+          cd frontend
+          npm run build
+
+      - name: Run Cypress E2E Login Tests
+        uses: cypress-io/github-action@v6
+        with:
+          working-directory: frontend
+          start: npm run start  
+          wait-on: http://localhost:5173 
+          wait-on-timeout: 60
+          spec: cypress/e2e/login.spec.js
+          browser: electron
+          record: false
+
+    
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: login-test-reports
+          path: frontend/cypress/reports/
