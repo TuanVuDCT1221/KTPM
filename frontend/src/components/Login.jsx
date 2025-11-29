@@ -1,86 +1,58 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../styles/Login.css";
-import { validateUsername, validatePassword } from "../utils/validation";
+import "../styles/Login.css"; // import CSS file
 
 const LoginForm = () => {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [usernameError, setUsernameError] = useState('');
-  const [passwordError, setPasswordError] = useState('');
-  const [serverError, setServerError] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleSubmit = async (e) => {
+        e.preventDefault();
 
-    // Reset server error
-    setServerError('');
+        try {
+            const response = await fetch("http://localhost:8080/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-    // Validate username
-    const uError = validateUsername(username);
-    if (uError) {
-      setUsernameError(uError);
-      return;
-    } else {
-      setUsernameError('');
-    }
+            const text = await response.text();
+            console.log("Server response:", text);
 
-    // Validate password
-    const pError = validatePassword(password);
-    if (pError) {
-      setPasswordError(pError);
-      return;
-    } else {
-      setPasswordError('');
-    }
+            if (!response.ok) {
+                throw new Error(text || "Đăng nhập thất bại!");
+            }
 
-    // =======================
-    // CALL BACKEND
-    // =======================
-    try {
-      const response = await fetch("http://localhost:8080/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+            // ✅ Lưu flag login vào sessionStorage
+            sessionStorage.setItem("token", "login_success"); // hoặc text nếu backend trả token
 
-      const text = await response.text();
-      console.log("Server response:", text);
+            alert("Đăng nhập thành công!");
+            navigate("/products");
+        } catch (error) {
+            console.error("Error:", error);
+            alert(error.message);
+        }
+    };
 
-      if (!response.ok) {
-        throw new Error(text || "Đăng nhập thất bại!");
-      }
-
-      // Lưu flag token
-      sessionStorage.setItem("token", "login_success");
-
-      alert("Đăng nhập thành công!");
-      navigate("/products");
-
-    } catch (err) {
-      console.error("Error:", err);
-      setServerError(err.message);
-    }
-  };
 
   return (
     <div className="page-container">
       <form onSubmit={handleSubmit} className="loginForm">
         <h1 className="title">LOGIN</h1>
-
-        {serverError && <p className="error">{serverError}</p>}
+        {error && <p className="error">{error}</p>}
 
         <div>
-          <label htmlFor="username">Username:</label>
+          <label htmlFor="email">Email:</label>
           <input
-            type="text"
-            id="username"
-            placeholder="Nhập username..."
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            id="email"
+            placeholder="Nhập email..."
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          {usernameError && <p className="error">{usernameError}</p>}
         </div>
 
         <div>
@@ -91,8 +63,8 @@ const LoginForm = () => {
             placeholder="Nhập mật khẩu..."
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
-          {passwordError && <p className="error">{passwordError}</p>}
         </div>
 
         <button type="submit">Đăng nhập</button>
