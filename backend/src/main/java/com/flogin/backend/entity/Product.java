@@ -18,4 +18,5 @@ public class Product {
     private Long qty;
     private double price;
     private String category;
+    private String description;
 }
