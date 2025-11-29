@@ -14,6 +14,7 @@ export default function ProductList({ data, onCreate, onEdit, onDelete, onView }
             <th>Số lượng</th>
             <th>Giá</th>
             <th>Danh mục</th>
+            <th>Mô tả</th>
             <th>Hành động</th>
           </tr>
         </thead>
@@ -25,6 +26,7 @@ export default function ProductList({ data, onCreate, onEdit, onDelete, onView }
               <td>{p.qty}</td>
               <td>{p.price}</td>
               <td>{p.category}</td>
+              <td>{p.description}</td>
               <td>
                 <button onClick={() => onView(p)}>Xem</button>
                 <button onClick={() => onEdit(p)}>Sửa</button>

@@ -37,7 +37,8 @@ export default function ProductManager() {
   };
 
   const handleSave = async (product) => {
-    await fetch(API, {
+    const url = product.id ? `${API}/${product.id}` : API;
+    await fetch(url, {
       method: product.id ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(product),

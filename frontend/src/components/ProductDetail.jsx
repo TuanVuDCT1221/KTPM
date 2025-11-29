@@ -11,6 +11,7 @@ export default function ProductDetail({ product, onBack }) {
       <p>Số lượng: {product.quantity}</p>
       <p>Giá: {product.price}</p>
       <p>Danh mục: {product.category}</p>
+      <p>Mô tả: {product.description}</p>
       <button onClick={onBack}>Quay lại</button>
     </div>
   );
