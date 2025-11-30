@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ProductManager from '../components/ProductManager';
+import ProductDetail from '../components/ProductDetail';
 
 global.fetch = jest.fn();
 
@@ -98,6 +99,19 @@ describe('4.2.1 Frontend Component Integration', () => {
         );
       });
     });
+
+    test('Tích hợp Form: Bấm nút Hủy quay lại danh sách', async () => {
+      fetch.mockResolvedValueOnce({ json: async () => [] });
+      render(<ProductManager />);
+
+      fireEvent.click(screen.getByText('Thêm sản phẩm'));
+      expect(screen.getByText('Thêm sản phẩm')).toBeInTheDocument();
+      fireEvent.click(screen.getByText('Hủy'));
+
+      await waitFor(() => {
+        expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
+      });
+    });
   });
 
   describe('c) Test ProductDetail Component Integration', () => {
@@ -118,6 +132,11 @@ describe('4.2.1 Frontend Component Integration', () => {
 
       fireEvent.click(screen.getByText('Quay lại'));
       expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
+    });
+
+    test('Hiển thị thông báo khi không có dữ liệu sản phẩm', () => {
+      render(<ProductDetail product={null} />);
+      expect(screen.getByText('Không có dữ liệu')).toBeInTheDocument();
     });
   });
 });
