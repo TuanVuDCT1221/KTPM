@@ -1,56 +1,54 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import "../styles/Login.css"; // import CSS file
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "../styles/Login.css";
+
+import { loginUser } from "../services/authService";
 
 const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState(""); 
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setMessage("");
 
-        try {
-            const response = await fetch("http://localhost:8080/auth/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
+    const result = await loginUser(username, password); // gửi username thay vì email
 
-            const text = await response.text();
-            console.log("Server response:", text);
+    if (result.success) {
+      sessionStorage.setItem("token", result.token || "login_success");
 
-            if (!response.ok) {
-                throw new Error(text || "Đăng nhập thất bại!");
-            }
+      setMessage("Đăng nhập thành công!");
 
-            // ✅ Lưu flag login vào sessionStorage
-            sessionStorage.setItem("token", "login_success"); // hoặc text nếu backend trả token
-
-            alert("Đăng nhập thành công!");
-            navigate("/products");
-        } catch (error) {
-            console.error("Error:", error);
-            alert(error.message);
-        }
-    };
-
+      // Điều hướng
+      navigate("/products");
+    } else {
+      setMessage(result.message || "Đăng nhập thất bại!");
+    }
+  };
 
   return (
     <div className="page-container">
       <form onSubmit={handleSubmit} className="loginForm">
         <h1 className="title">LOGIN</h1>
-        {error && <p className="error">{error}</p>}
+
+        {/* message */}
+        {message && (
+          <p data-testid="login-message" className="error">
+            {message}
+          </p>
+        )}
 
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="username">Username:</label>
           <input
-            type="email"
-            id="email"
-            placeholder="Nhập email..."
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            data-testid="username-input"
+            type="text"
+            id="username"
+            placeholder="Nhập username..."
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
@@ -58,6 +56,7 @@ const LoginForm = () => {
         <div>
           <label htmlFor="password">Mật khẩu:</label>
           <input
+            data-testid="password-input"
             type="password"
             id="password"
             placeholder="Nhập mật khẩu..."
@@ -67,10 +66,12 @@ const LoginForm = () => {
           />
         </div>
 
-        <button type="submit">Đăng nhập</button>
+        <button data-testid="login-button" type="submit">
+          Đăng nhập
+        </button>
 
         <p>
-          Chưa có tài khoản?{' '}
+          Chưa có tài khoản?{" "}
           <a href="/register" className="link">
             Đăng ký ngay
           </a>

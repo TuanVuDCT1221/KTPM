@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from "react";
 
 export default function ProductForm({ product, onSave, onCancel }) {
-  const [form, setForm] = useState({ id: "", name: "", qty: "", price: "", category: "" });
+  const [form, setForm] = useState({
+    id: "",
+    name: "",
+    qty: "",
+    price: "",
+    category: "",
+    description: "", // <--- ĐÃ THÊM
+  });
 
   useEffect(() => {
+    // Khi product thay đổi (từ null sang edit item), cập nhật form
     if (product) setForm(product);
   }, [product]);
 
@@ -39,6 +47,18 @@ export default function ProductForm({ product, onSave, onCancel }) {
           <option value="Milk">Milk</option>
         </select>
       </div>
+
+      {/* <--- ĐÃ THÊM TRƯỜNG DESCRIPTION */}
+      <div>
+        <label>Mô tả:</label>
+        <textarea
+          name="description"
+          value={form.description}
+          onChange={change}
+          rows="3"
+        />
+      </div>
+      {/* ĐÃ THÊM TRƯỜNG DESCRIPTION ---> */}
 
       <button onClick={() => onSave(form)}>Lưu</button>
       <button onClick={onCancel}>Hủy</button>
