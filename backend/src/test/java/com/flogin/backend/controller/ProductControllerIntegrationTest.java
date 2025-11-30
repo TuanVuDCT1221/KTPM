@@ -80,6 +80,16 @@ public class ProductControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("c2) Test GET /api/products/{id} (Not Found)")
+    void testGetProductById_NotFound() throws Exception {
+
+        given(productService.getById(999L)).willReturn(null);
+
+        mockMvc.perform(get("/api/products/999"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
     @DisplayName("d) Test PUT /api/products/{id} (Update)")
     void testUpdateProduct() throws Exception {
         Product updateInfo = new Product(null, "Sting Dau", 50L, 15000.0, "Drink", "Ngon tuyệt");
