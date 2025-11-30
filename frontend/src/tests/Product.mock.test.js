@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ProductManager from '../components/ProductManager';
+import ProductDetail from '../components/ProductDetail';
 
 global.fetch = jest.fn();
 
@@ -225,5 +226,41 @@ describe('5.2.1 Frontend Mocking', () => {
         expect.objectContaining({ method: 'POST' })
       );
     });
+  });
+
+  test('Mock: Xem chi tiết sản phẩm và quay lại', async () => {
+    const mockData = [{ id: 1, name: 'Sản phẩm Xem', qty: 10, price: 5000, category: 'Tea', description: 'Mô tả xem' }];
+    fetch.mockResolvedValue({ ok: true, json: async () => mockData });
+
+    render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Sản phẩm Xem'));
+
+    fireEvent.click(screen.getByText('Xem'));
+    expect(screen.getByText('Chi tiết sản phẩm')).toBeInTheDocument();
+    expect(screen.getByText(/Mô tả xem/)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Quay lại'));
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+  });
+
+
+  test('Mock: Hủy bỏ khi đang thêm sản phẩm', async () => {
+    fetch.mockResolvedValue({ ok: true, json: async () => [] });
+    render(<ProductManager />);
+
+    fireEvent.click(screen.getByText('Thêm sản phẩm'));
+    expect(screen.getByText('Thêm sản phẩm')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Hủy'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
+    });
+  });
+
+  test('Mock: Hiển thị thông báo khi không có dữ liệu chi tiết', () => {
+    render(<ProductDetail product={null} />);
+    expect(screen.getByText('Không có dữ liệu')).toBeInTheDocument();
   });
 });

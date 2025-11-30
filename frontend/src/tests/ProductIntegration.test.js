@@ -29,6 +29,28 @@ describe('4.2.1 Frontend Component Integration', () => {
         expect(screen.getByText('Trà đào ngâm sả')).toBeInTheDocument();
       });
     });
+
+    test('Tích hợp List: Bấm nút Xóa sản phẩm', async () => {
+      const mockData = [{ id: 1, name: 'Sản phẩm Xóa', qty: 1, price: 10, category: 'Milk', description: 'Xoa' }];
+      fetch.mockResolvedValueOnce({ json: async () => mockData });
+
+      render(<ProductManager />);
+
+      await waitFor(() => screen.getByText('Sản phẩm Xóa'));
+
+      fetch.mockResolvedValueOnce({ ok: true });
+      fetch.mockResolvedValueOnce({ json: async () => [] });
+
+      const deleteButtons = screen.getAllByText('Xóa');
+      fireEvent.click(deleteButtons[0]);
+
+      await waitFor(() => {
+        expect(fetch).toHaveBeenCalledWith(
+          expect.stringContaining('/api/products/1'),
+          expect.objectContaining({ method: 'DELETE' })
+        );
+      });
+    });
   });
 
   describe('b) Test ProductForm Component Integration', () => {
