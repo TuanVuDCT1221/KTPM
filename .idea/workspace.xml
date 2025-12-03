@@ -5,10 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b1e23e5-3d98-41f9-9921-1141865ab5b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/jest.config.cjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/security/JwtUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/controller/AuthController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/controller/AuthController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/dto/LoginRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/dto/LoginRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/repository/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/repository/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/service/AuthService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/service/AuthService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/clover.xml" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/clover.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/coverage-final.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/coverage-final.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov-report/components/ProductForm.jsx.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov-report/components/ProductForm.jsx.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov-report/components/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov-report/components/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov-report/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov-report/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov-report/productValidation.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov-report/productValidation.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov-report/utils/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov-report/utils/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov-report/utils/productValidation.js.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov-report/utils/productValidation.js.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/coverage/lcov.info" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/coverage/lcov.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +32,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JavaScript File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -114,7 +128,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762331309719</updated>
-      <workItem from="1764771152082" duration="7046000" />
+      <workItem from="1764771152082" duration="10721000" />
     </task>
     <servers />
   </component>
