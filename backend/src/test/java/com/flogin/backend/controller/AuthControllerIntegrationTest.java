@@ -2,6 +2,7 @@ package com.flogin.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flogin.backend.dto.LoginRequest;
+import com.flogin.backend.dto.LoginResponse;
 import com.flogin.backend.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,8 +38,18 @@ class AuthControllerIntegrationTest {
         LoginRequest request = new LoginRequest("testuser", "Test123");
         final String mockToken = "mock-jwt-token";
 
-        when(authService.authenticate(request.getUsername(), request.getPassword()))
-                .thenReturn(mockToken);
+        LoginResponse mockResponse = LoginResponse.builder()
+                .success(true)
+                .message("Đăng nhập thành công!")
+                .username(request.getUsername())
+                .token(mockToken)
+                .build();
+
+        when(authService.authenticate(any(LoginRequest.class)))
+                .thenReturn(mockResponse);
+
+//        when(authService.authenticate(request.getUsername(), request.getPassword()))
+//                .thenReturn(mockToken);
 
         mockMvc.perform(post(LOGIN_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -48,7 +59,9 @@ class AuthControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value("Đăng nhập thành công!"))
                 .andExpect(jsonPath("$.token").value(mockToken));
 
-        verify(authService, times(1)).authenticate(request.getUsername(), request.getPassword());
+//        verify(authService, times(1)).authenticate(request.getUsername(), request.getPassword());
+        verify(authService, times(1)).authenticate(any(LoginRequest.class));
+
     }
 
     @Test
@@ -57,8 +70,17 @@ class AuthControllerIntegrationTest {
         LoginRequest request = new LoginRequest("testuser", "WrongPass");
         final String errorMessage = "Invalid password";
 
-        when(authService.authenticate(request.getUsername(), request.getPassword()))
-                .thenThrow(new RuntimeException(errorMessage));
+        LoginResponse mockResponse = LoginResponse.builder()
+                .success(false)
+                .message(errorMessage)
+                .username(null)
+                .token(null)
+                .build();
+
+        when(authService.authenticate(any(LoginRequest.class)))
+                .thenReturn(mockResponse);
+//        when(authService.authenticate(request.getUsername(), request.getPassword()))
+//                .thenThrow(new RuntimeException(errorMessage));
 
         mockMvc.perform(post(LOGIN_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -68,7 +90,9 @@ class AuthControllerIntegrationTest {
                 .andExpect(jsonPath("$.message").value(errorMessage))
                 .andExpect(jsonPath("$.token").doesNotExist());
 
-        verify(authService, times(1)).authenticate(request.getUsername(), request.getPassword());
+//        verify(authService, times(1)).authenticate(request.getUsername(), request.getPassword());
+        verify(authService, times(1)).authenticate(any(LoginRequest.class));
+
     }
 
     @Test
@@ -78,7 +102,16 @@ class AuthControllerIntegrationTest {
         final String mockToken = "cors-token";
         final String allowedOrigin = "http://localhost:5173";
 
-        when(authService.authenticate(anyString(), anyString())).thenReturn(mockToken);
+//        when(authService.authenticate(anyString(), anyString())).thenReturn(mockToken);
+        LoginResponse mockResponse = LoginResponse.builder()
+                .success(true)
+                .message("Đăng nhập thành công!")
+                .username(request.getUsername())
+                .token(mockToken)
+                .build();
+
+        when(authService.authenticate(any(LoginRequest.class)))
+                .thenReturn(mockResponse);
 
         mockMvc.perform(post(LOGIN_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)

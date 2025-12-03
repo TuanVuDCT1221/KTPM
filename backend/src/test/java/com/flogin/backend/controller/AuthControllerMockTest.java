@@ -2,6 +2,7 @@ package com.flogin.backend.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.flogin.backend.dto.LoginRequest;
+import com.flogin.backend.dto.LoginResponse;
 import com.flogin.backend.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,8 +38,17 @@ class AuthControllerMockTest {
         String mockToken = "mock-jwt-token-123";
         LoginRequest request = new LoginRequest("testuser", "Pass123");
 
-        when(authService.authenticate(request.getUsername(), request.getPassword()))
-                .thenReturn(mockToken);
+//        when(authService.authenticate(request.getUsername(), request.getPassword()))
+//                .thenReturn(mockToken);
+        LoginResponse mockResponse = LoginResponse.builder()
+                .success(true)
+                .message("Đăng nhập thành công!")
+                .username(request.getUsername())
+                .token(mockToken)
+                .build();
+
+        when(authService.authenticate(any(LoginRequest.class)))
+                .thenReturn(mockResponse);
 
         mockMvc.perform(post(LOGIN_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -47,8 +57,10 @@ class AuthControllerMockTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.token").value(mockToken));
 
+//        verify(authService, times(1))
+//                .authenticate(request.getUsername(), request.getPassword());
         verify(authService, times(1))
-                .authenticate(request.getUsername(), request.getPassword());
+                .authenticate(any(LoginRequest.class));
     }
 
     @Test
@@ -57,8 +69,17 @@ class AuthControllerMockTest {
         LoginRequest request = new LoginRequest("wronguser", "WrongPass");
         String errorMessage = "Mật khẩu không chính xác";
 
-        when(authService.authenticate(request.getUsername(), request.getPassword()))
-                .thenThrow(new RuntimeException(errorMessage));
+//        when(authService.authenticate(request.getUsername(), request.getPassword()))
+//                .thenThrow(new RuntimeException(errorMessage));
+        LoginResponse mockResponse = LoginResponse.builder()
+                .success(false)
+                .message(errorMessage)
+                .username(null)
+                .token(null)
+                .build();
+
+        when(authService.authenticate(any(LoginRequest.class)))
+                .thenReturn(mockResponse);
 
         mockMvc.perform(post(LOGIN_ENDPOINT)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -67,7 +88,9 @@ class AuthControllerMockTest {
                 .andExpect(jsonPath("$.success").value(false))
                 .andExpect(jsonPath("$.message").value(errorMessage));
 
+//        verify(authService, times(1))
+//                .authenticate(request.getUsername(), request.getPassword());
         verify(authService, times(1))
-                .authenticate(request.getUsername(), request.getPassword());
+                .authenticate(any(LoginRequest.class));
     }
 }
