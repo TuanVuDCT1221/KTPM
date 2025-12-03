@@ -5,16 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b1e23e5-3d98-41f9-9921-1141865ab5b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/dto/LoginResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/entity/CategoryType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/ProductServiceTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/tests/ProductForm.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/tests/ProductValidation.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/tests/setupTests.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/utils/productValidation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/controller/ProductController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/dto/ProductDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/dto/ProductDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/entity/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/entity/Product.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/repository/ProductRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/repository/ProductRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/service/ProductService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/service/ProductService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ProductForm.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProductForm.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ProductList.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProductList.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/ProductManager.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/ProductManager.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/services/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/services/api.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,6 +24,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -47,6 +47,7 @@
   "keyToString": {
     "Application.BackendApplication.executor": "Run",
     "JUnit.BackendApplicationTests.executor": "Run",
+    "JUnit.ProductServiceTest.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
@@ -115,7 +116,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1762331309719</updated>
-      <workItem from="1764771152082" duration="2126000" />
+      <workItem from="1764771152082" duration="2994000" />
     </task>
     <servers />
   </component>
