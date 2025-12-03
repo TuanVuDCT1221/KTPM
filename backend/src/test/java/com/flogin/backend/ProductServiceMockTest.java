@@ -10,6 +10,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.List;
@@ -29,6 +33,13 @@ public class ProductServiceMockTest {
 
     @InjectMocks
     private ProductService productService;
+    
+    private static final double PRICE_40M = 40000000.0;
+    private static final double PRICE_30M = 30000000.0;
+    private static final double PRICE_18M = 18000000.0;
+    private static final double PRICE_25M = 25000000.0;
+    private static final double PRICE_100 = 100.0;
+
 
     @Test
     @DisplayName("Create Product: Success")
@@ -50,7 +61,7 @@ public class ProductServiceMockTest {
     @Test
     @DisplayName("Create Product: Fail (Duplicate Name)")
     void testCreateProduct_Fail_DuplicateName() {
-        ProductDTO inputDto = new ProductDTO(null, "MacBook Pro", 10L, 40M, "Desc", "Ultrabook");
+        ProductDTO inputDto = new ProductDTO(null, "MacBook Pro", 10L, PRICE_40M, "Desc", "Ultrabook");
         given(productRepository.existsByName("MacBook Pro")).willReturn(true);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> productService.createProduct(inputDto));
@@ -62,8 +73,8 @@ public class ProductServiceMockTest {
     @DisplayName("Get Products: Success")
     void testGetProducts() {
         List<Product> entities = Arrays.asList(
-                new Product(1L, "MacBook Air", 10L, 18M, "Desc", CategoryType.ULTRABOOK),
-                new Product(2L, "Lenovo", 50L, 25M, "Desc", CategoryType.BUSINESS)
+                new Product(1L, "MacBook Air", 10L, PRICE_18M, "Desc", CategoryType.ULTRABOOK),
+                new Product(2L, "Lenovo", 50L, PRICE_25M, "Desc", CategoryType.BUSINESS)
         );
         given(productRepository.findAll()).willReturn(entities);
 
@@ -77,7 +88,7 @@ public class ProductServiceMockTest {
     @Test
     @DisplayName("Get Product By ID: Success")
     void testGetProduct_Success() {
-        Product entity = new Product(1L, "Dell XPS", 5L, 30M, "Desc", CategoryType.BUSINESS);
+        Product entity = new Product(1L, "Dell XPS", 5L, PRICE_30M, "Desc", CategoryType.BUSINESS);
         given(productRepository.findById(1L)).willReturn(Optional.of(entity));
 
         ProductDTO result = productService.getProduct(1L);
@@ -97,7 +108,7 @@ public class ProductServiceMockTest {
     @Test
     @DisplayName("Update Product: Success")
     void testUpdateProduct_Success() {
-        Product existing = new Product(1L, "Old Name", 10L, 100.0, "Old Desc", CategoryType.ELECTRONICS);
+        Product existing = new Product(1L, "Old Name", 10L, PRICE_100, "Old Desc", CategoryType.BUSINESS);
         ProductDTO updateDto = new ProductDTO(null, "New Name", 20L, 200.0, "New Desc", "Gaming");
         Product updated = new Product(1L, "New Name", 20L, 200.0, "New Desc", CategoryType.GAMING);
 
@@ -123,8 +134,8 @@ public class ProductServiceMockTest {
     @Test
     @DisplayName("Update Product: Fail (Duplicate Name)")
     void testUpdateProduct_DuplicateName() {
-        Product existing = new Product(1L, "Old Name", 10L, 100.0, "Old", CategoryType.BUSINESS);
-        ProductDTO updateDto = new ProductDTO(null, "Duplicate Name", 10L, 100.0, "Desc", "Business");
+        Product existing = new Product(1L, "Old Name", 10L, PRICE_100, "Old", CategoryType.BUSINESS);
+        ProductDTO updateDto = new ProductDTO(null, "Duplicate Name", 10L, PRICE_100, "Desc", "Business");
 
         given(productRepository.findById(1L)).willReturn(Optional.of(existing));
         given(productRepository.existsByNameAndIdNot("Duplicate Name", 1L)).willReturn(true);
@@ -147,4 +158,44 @@ public class ProductServiceMockTest {
         assertThrows(NoSuchElementException.class, () -> productService.deleteProduct(99L));
         verify(productRepository, never()).deleteById(99L);
     }
+    
+    @Test
+    @DisplayName("Update Product: Success (Category set to null)")
+    void testUpdateProduct_CategorySetToNull() { 
+        Product existing = new Product(1L, "Laptop with Cat", 10L, 100.0, "Desc", CategoryType.BUSINESS);
+        
+        ProductDTO updateDto = new ProductDTO(null, "Laptop Null Cat", 20L, 200.0, "New Desc", null);
+        
+        Product updated = new Product(1L, "Laptop Null Cat", 20L, 200.0, "New Desc", null);
+
+        given(productRepository.findById(1L)).willReturn(Optional.of(existing));
+        given(productRepository.existsByNameAndIdNot("Laptop Null Cat", 1L)).willReturn(false);
+        given(productRepository.save(any(Product.class))).willReturn(updated);
+
+        ProductDTO result = productService.updateProduct(1L, updateDto);
+
+        assertEquals("Laptop Null Cat", result.getName());
+        assertNull(result.getCategory()); 
+        
+        verify(productRepository).save(any(Product.class));
+    }
+
+    @Test
+    @DisplayName("Get Products: Test Get All with Pagination")
+    void testGetProducts_WithPagination() {
+        Product product = new Product(1L, "Laptop Paginated", 10L, 100.0, "Desc", CategoryType.ULTRABOOK);
+        List<Product> content = List.of(product);
+        Page<Product> page = new PageImpl<>(content, PageRequest.of(0, 1), content.size());
+
+        given(productRepository.findAll(any(Pageable.class))).willReturn(page);
+
+        Page<ProductDTO> result = productService.getProducts(PageRequest.of(0, 1));
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Laptop Paginated", result.getContent().get(0).getName());
+
+        verify(productRepository).findAll(any(Pageable.class));
+    }
 }
+

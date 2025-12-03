@@ -139,4 +139,34 @@ public class ProductControllerIntegrationTest {
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("Sản phẩm không tồn tại"));
     }
+
+    @Test
+    @DisplayName("Test PUT /api/products/{id} (Fail - 404 Not Found)")
+    void testUpdateProduct_NotFound() throws Exception {
+        ProductDTO updateInfo = new ProductDTO(null, "Dell XPS 13 Plus", 5L, 35000000.0, "Bản nâng cấp", "Business");
+
+        doThrow(new NoSuchElementException("Sản phẩm không tồn tại"))
+                .when(productService).updateProduct(eq(99L), any(ProductDTO.class));
+
+        mockMvc.perform(put("/api/products/99")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateInfo)))
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("Sản phẩm không tồn tại"));
+    }
+
+    @Test
+    @DisplayName("Test PUT /api/products/{id} (Fail - 400 Duplicate Name)")
+    void testUpdateProduct_DuplicateName() throws Exception {
+        ProductDTO updateInfo = new ProductDTO(null, "Tên Bị Trùng", 5L, 35000000.0, "Bản nâng cấp", "Business");
+
+        doThrow(new IllegalArgumentException("Tên sản phẩm đã tồn tại"))
+                .when(productService).updateProduct(eq(1L), any(ProductDTO.class));
+
+        mockMvc.perform(put("/api/products/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateInfo)))
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Tên sản phẩm đã tồn tại"));
+    }
 }
