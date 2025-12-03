@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1764780800192" clover="3.2.0">
+  <project timestamp="1764780800192" name="All files">
+    <metrics statements="46" coveredstatements="44" conditionals="75" coveredconditionals="69" methods="6" coveredmethods="6" elements="127" coveredelements="119" complexity="0" loc="46" ncloc="46" packages="2" files="2" classes="2"/>
+    <package name="components">
+      <metrics statements="18" coveredstatements="18" conditionals="42" coveredconditionals="38" methods="5" coveredmethods="5"/>
+      <file name="ProductForm.jsx" path="D:\GitHub\KTPM_Main\frontend\src\components\ProductForm.jsx">
+        <metrics statements="18" coveredstatements="18" conditionals="42" coveredconditionals="38" methods="5" coveredmethods="5"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="14" count="56" type="stmt"/>
+        <line num="15" count="56" type="stmt"/>
+        <line num="17" count="56" type="stmt"/>
+        <line num="18" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="32" count="7" type="stmt"/>
+        <line num="36" count="56" type="stmt"/>
+        <line num="37" count="27" type="stmt"/>
+        <line num="38" count="27" type="stmt"/>
+        <line num="44" count="56" type="stmt"/>
+        <line num="45" count="9" type="stmt"/>
+        <line num="46" count="9" type="stmt"/>
+        <line num="48" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="8" type="stmt"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="67" count="56" type="stmt"/>
+      </file>
+    </package>
+    <package name="utils">
+      <metrics statements="28" coveredstatements="26" conditionals="33" coveredconditionals="31" methods="1" coveredmethods="1"/>
+      <file name="productValidation.js" path="D:\GitHub\KTPM_Main\frontend\src\utils\productValidation.js">
+        <metrics statements="28" coveredstatements="26" conditionals="33" coveredconditionals="31" methods="1" coveredmethods="1"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="9" type="stmt"/>
+        <line num="5" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="6" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="8" type="cond" truecount="3" falsecount="1"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="14" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="17" count="7" type="stmt"/>
+        <line num="19" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="26" count="9" type="stmt"/>
+        <line num="27" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="30" count="8" type="stmt"/>
+        <line num="31" count="8" type="cond" truecount="5" falsecount="0"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="36" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="40" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="45" count="9" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>
