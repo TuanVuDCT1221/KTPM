@@ -30,6 +30,8 @@ describe('5.2.1 Frontend Mocking (Product Service/API)', () => {
 
     const { container } = render(<ProductManager />);
 
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
     fireEvent.click(screen.getByText('Thêm sản phẩm'));
 
     const nameInput = container.querySelector('input[name="name"]');
@@ -48,7 +50,6 @@ describe('5.2.1 Frontend Mocking (Product Service/API)', () => {
 
     await waitFor(() => {
       expect(api.post).toHaveBeenCalledTimes(1);
-
       expect(api.post).toHaveBeenCalledWith(
         '/api/products',
         expect.objectContaining({
@@ -56,7 +57,6 @@ describe('5.2.1 Frontend Mocking (Product Service/API)', () => {
           category: 'Gaming'
         })
       );
-
       expect(mockAlert).toHaveBeenCalledWith('Thêm sản phẩm thành công');
     });
   });
@@ -148,6 +148,8 @@ describe('5.2.1 Frontend Mocking (Product Service/API)', () => {
     });
 
     const { container } = render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
 
     fireEvent.click(screen.getByText('Thêm sản phẩm'));
 
@@ -242,5 +244,139 @@ describe('5.2.1 Frontend Mocking (Product Service/API)', () => {
     fireEvent.click(screen.getByText('Quay lại'));
 
     expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
+  });
+
+
+  test(' ProductDetail hiển thị "Không có dữ liệu" khi product null', () => {
+    const ProductDetail = require('../components/ProductDetail').default;
+    render(<ProductDetail product={null} />);
+    expect(screen.getByText('Không có dữ liệu')).toBeInTheDocument();
+  });
+
+  test('Delete Product - Người dùng chọn Hủy (Cancel)', async () => {
+    const mockData = [{ id: 101, name: 'Sản phẩm Hủy Xóa', quantity: 1, price: 5000, category: 'Other' }];
+    api.get.mockResolvedValue({ data: mockData });
+
+    mockConfirm.mockReturnValueOnce(false);
+
+    render(<ProductManager />);
+    await waitFor(() => screen.getByText('Sản phẩm Hủy Xóa'));
+
+    fireEvent.click(screen.getByText('Xóa'));
+
+    expect(api.delete).not.toHaveBeenCalled();
+    expect(mockConfirm).toHaveBeenCalled();
+  });
+
+  test('Delete Product - API bị lỗi khi xóa', async () => {
+    const mockData = [{ id: 102, name: 'Sản phẩm Xóa Lỗi', quantity: 1, price: 5000, category: 'Other' }];
+    api.get.mockResolvedValue({ data: mockData });
+
+    api.delete.mockRejectedValue(new Error("Lỗi mạng khi xóa"));
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+
+    render(<ProductManager />);
+    await waitFor(() => screen.getByText('Sản phẩm Xóa Lỗi'));
+
+    fireEvent.click(screen.getByText('Xóa'));
+
+    await waitFor(() => {
+      expect(api.delete).toHaveBeenCalled();
+      expect(screen.getByText('Đã xảy ra lỗi. Vui lòng thử lại.')).toBeInTheDocument();
+    });
+    consoleSpy.mockRestore();
+  });
+
+  test('Hiển thị lỗi chung khi API trả về lỗi không đúng định dạng message', async () => {
+    api.get.mockResolvedValue({ data: [] });
+    api.post.mockRejectedValue({ response: { data: null } });
+
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+
+    const { container } = render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
+    fireEvent.click(screen.getByText('Thêm sản phẩm'));
+
+    fireEvent.change(container.querySelector('input[name="name"]'), { target: { value: 'Test Error' } });
+    fireEvent.change(container.querySelector('input[name="price"]'), { target: { value: '1000' } });
+    fireEvent.change(container.querySelector('input[name="quantity"]'), { target: { value: '10' } });
+    fireEvent.change(container.querySelector('select[name="category"]'), { target: { value: 'Gaming' } });
+
+    fireEvent.click(screen.getByText('Lưu'));
+
+    await waitFor(() => {
+      expect(screen.getByText('Đã xảy ra lỗi. Vui lòng thử lại.')).toBeInTheDocument();
+    });
+
+    consoleSpy.mockRestore();
+  });
+
+
+  test('Nút Hủy (Cancel) trong Form quay về danh sách', async () => {
+    api.get.mockResolvedValue({ data: [] });
+    render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
+    fireEvent.click(screen.getByText('Thêm sản phẩm'));
+    expect(screen.getByText('Thêm sản phẩm', { selector: 'h2' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Hủy'));
+    expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
+  });
+
+  test('Validation - Kiểm tra tất cả các lỗi input form', async () => {
+    api.get.mockResolvedValue({ data: [] });
+    const { container } = render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
+    fireEvent.click(screen.getByText('Thêm sản phẩm'));
+
+    const saveBtn = screen.getByText('Lưu');
+    const nameInput = container.querySelector('input[name="name"]');
+    const priceInput = container.querySelector('input[name="price"]');
+    const qtyInput = container.querySelector('input[name="quantity"]');
+    const catSelect = container.querySelector('select[name="category"]');
+    const descInput = container.querySelector('textarea[name="description"]');
+
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Tên sản phẩm không được để trống')).toBeInTheDocument();
+    expect(screen.getByText('Giá không được để trống')).toBeInTheDocument();
+    expect(screen.getByText('Số lượng không được để trống')).toBeInTheDocument();
+    expect(screen.getByText('Danh mục không được để trống')).toBeInTheDocument();
+    expect(api.post).not.toHaveBeenCalled();
+
+    fireEvent.change(nameInput, { target: { value: 'AB' } });
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Tên sản phẩm phải từ 3 đến 100 ký tự')).toBeInTheDocument();
+
+    fireEvent.change(nameInput, { target: { value: 'Valid Name' } });
+    fireEvent.change(priceInput, { target: { value: '0' } });
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Giá phải lớn hơn 0')).toBeInTheDocument();
+
+    fireEvent.change(priceInput, { target: { value: '1000000000' } });
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Giá phải nhỏ hơn hoặc bằng 999,999,999')).toBeInTheDocument();
+
+    fireEvent.change(priceInput, { target: { value: '50000' } });
+    fireEvent.change(qtyInput, { target: { value: '-1' } });
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Số lượng phải từ 0 đến 99,999')).toBeInTheDocument();
+
+    fireEvent.change(qtyInput, { target: { value: '100000' } });
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Số lượng phải từ 0 đến 99,999')).toBeInTheDocument();
+
+    fireEvent.change(qtyInput, { target: { value: '10' } });
+    fireEvent.change(catSelect, { target: { value: 'Gaming' } });
+    const longText = 'a'.repeat(501);
+    fireEvent.change(descInput, { target: { value: longText } });
+
+    fireEvent.click(saveBtn);
+    expect(screen.getByText('Mô tả phải nhỏ hơn hoặc bằng 500 ký tự')).toBeInTheDocument();
   });
 });
