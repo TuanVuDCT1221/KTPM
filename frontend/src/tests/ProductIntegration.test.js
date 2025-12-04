@@ -291,4 +291,18 @@ describe('4.2.1 Frontend Component Integration', () => {
 
     expect(api.post).not.toHaveBeenCalled();
   });
+
+  test('Form: Nút Hủy quay về danh sách', async () => {
+    api.get.mockResolvedValue({ data: [] });
+    render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
+    fireEvent.click(screen.getByText('Thêm sản phẩm'));
+    expect(screen.getByText('Thêm sản phẩm', { selector: 'h2' })).toBeInTheDocument();
+
+    fireEvent.click(screen.getByText('Hủy'));
+
+    expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
+  });
 });
