@@ -4,7 +4,7 @@ import Login from './components/Login';
 import ProductManager from './components/ProductManager';
 
 function App() {
-  const token = sessionStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   return (
     <>

@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b1e23e5-3d98-41f9-9921-1141865ab5b7" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/frontend/src/tests/LoginValidation.test.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/utils/loginValidation.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/backend/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/utils/validation.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/utils/validation.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -16,8 +20,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -117,7 +121,8 @@
       <option name="presentableId" value="Default" />
       <updated>1762331309719</updated>
       <workItem from="1764771152082" duration="12230000" />
-      <workItem from="1764789933604" duration="57000" />
+      <workItem from="1764789933604" duration="1314000" />
+      <workItem from="1764827169221" duration="325000" />
     </task>
     <servers />
   </component>
