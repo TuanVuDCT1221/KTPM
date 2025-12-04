@@ -159,6 +159,43 @@ public class ProductServiceMockTest {
         verify(productRepository, never()).deleteById(99L);
     }
     
+    @Test
+    @DisplayName("Update Product: Success (Category set to null)")
+    void testUpdateProduct_CategorySetToNull() { 
+        Product existing = new Product(1L, "Laptop with Cat", 10L, 100.0, "Desc", CategoryType.BUSINESS);
+        
+        ProductDTO updateDto = new ProductDTO(null, "Laptop Null Cat", 20L, 200.0, "New Desc", null);
+        
+        Product updated = new Product(1L, "Laptop Null Cat", 20L, 200.0, "New Desc", null);
 
+        given(productRepository.findById(1L)).willReturn(Optional.of(existing));
+        given(productRepository.existsByNameAndIdNot("Laptop Null Cat", 1L)).willReturn(false);
+        given(productRepository.save(any(Product.class))).willReturn(updated);
+
+        ProductDTO result = productService.updateProduct(1L, updateDto);
+
+        assertEquals("Laptop Null Cat", result.getName());
+        assertNull(result.getCategory()); 
+        
+        verify(productRepository).save(any(Product.class));
+    }
+
+    @Test
+    @DisplayName("Get Products: Test Get All with Pagination")
+    void testGetProducts_WithPagination() {
+        Product product = new Product(1L, "Laptop Paginated", 10L, 100.0, "Desc", CategoryType.ULTRABOOK);
+        List<Product> content = List.of(product);
+        Page<Product> page = new PageImpl<>(content, PageRequest.of(0, 1), content.size());
+
+        given(productRepository.findAll(any(Pageable.class))).willReturn(page);
+
+        Page<ProductDTO> result = productService.getProducts(PageRequest.of(0, 1));
+
+        assertNotNull(result);
+        assertEquals(1, result.getTotalElements());
+        assertEquals("Laptop Paginated", result.getContent().get(0).getName());
+
+        verify(productRepository).findAll(any(Pageable.class));
+    }
 }
 
