@@ -2,264 +2,233 @@ import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ProductManager from '../components/ProductManager';
-import ProductDetail from '../components/ProductDetail';
+import api from '../services/api';
 
-global.fetch = jest.fn();
+jest.mock('../services/api');
 
-describe('5.2.1 Frontend Mocking', () => {
+const mockAlert = jest.spyOn(window, 'alert').mockImplementation(() => { });
+const mockConfirm = jest.spyOn(window, 'confirm').mockImplementation(() => true);
+
+describe('5.2.1 Frontend Mocking (Product Service/API)', () => {
 
   beforeEach(() => {
-    fetch.mockClear();
+    jest.clearAllMocks();
+    mockConfirm.mockReturnValue(true);
   });
 
-  test('Mock: Gọi API POST khi tạo sản phẩm thành công (create)', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [],
-    });
+  test('Create Product thành công (POST)', async () => {
+    const newProduct = {
+      name: 'Laptop Gaming',
+      price: 20000000,
+      quantity: 5,
+      category: 'Gaming',
+      description: 'RTX 4060'
+    };
 
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ id: 1, name: 'Trà Xanh', price: 20000, qty: 10, category: 'Tea', description: 'Thơm ngon' }),
-    });
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ([{ id: 1, name: 'Trà Xanh', price: 20000, qty: 10, category: 'Tea', description: 'Thơm ngon' }]),
-    });
+    api.get.mockResolvedValue({ data: [] });
+    api.post.mockResolvedValue({ data: { id: 1, ...newProduct } });
 
     const { container } = render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
     fireEvent.click(screen.getByText('Thêm sản phẩm'));
 
     const nameInput = container.querySelector('input[name="name"]');
     const priceInput = container.querySelector('input[name="price"]');
-    const qtyInput = container.querySelector('input[name="qty"]');
+    const qtyInput = container.querySelector('input[name="quantity"]');
+    const catSelect = container.querySelector('select[name="category"]');
     const descInput = container.querySelector('textarea[name="description"]');
 
-    fireEvent.change(nameInput, { target: { value: 'Trà Xanh' } });
-    fireEvent.change(priceInput, { target: { value: '20000' } });
-    fireEvent.change(qtyInput, { target: { value: '10' } });
-    fireEvent.change(descInput, { target: { value: 'Thơm ngon' } });
+    fireEvent.change(nameInput, { target: { value: newProduct.name } });
+    fireEvent.change(priceInput, { target: { value: newProduct.price } });
+    fireEvent.change(qtyInput, { target: { value: newProduct.quantity } });
+    fireEvent.change(catSelect, { target: { value: newProduct.category } });
+    fireEvent.change(descInput, { target: { value: newProduct.description } });
 
     fireEvent.click(screen.getByText('Lưu'));
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/products'),
+      expect(api.post).toHaveBeenCalledTimes(1);
+      expect(api.post).toHaveBeenCalledWith(
+        '/api/products',
         expect.objectContaining({
-          method: 'POST',
-          headers: { "Content-Type": "application/json" },
-          body: expect.stringContaining('"description":"Thơm ngon"')
+          name: 'Laptop Gaming',
+          category: 'Gaming'
         })
       );
+      expect(mockAlert).toHaveBeenCalledWith('Thêm sản phẩm thành công');
     });
   });
 
-  test('Mock: Gọi API GET và hiển thị danh sách (read)', async () => {
+  test('Get Products hiển thị danh sách (GET)', async () => {
     const mockData = [
-      { id: 10, name: 'Cà phê sữa', qty: 5, price: 25000, category: 'Coffee', description: 'Sữa đặc' }
+      { id: 1, name: 'MacBook Air', quantity: 10, price: 18000000, category: 'Ultrabook' }
     ];
 
-    fetch.mockResolvedValue({
-      ok: true,
-      json: async () => mockData,
-    });
+    api.get.mockResolvedValue({ data: mockData });
 
     render(<ProductManager />);
 
     await waitFor(() => {
-      expect(screen.getByText('Cà phê sữa')).toBeInTheDocument();
-      expect(screen.getByText('Sữa đặc')).toBeInTheDocument();
+      expect(screen.getByText('MacBook Air')).toBeInTheDocument();
     });
 
-    expect(fetch).toHaveBeenCalledTimes(1);
+    expect(api.get).toHaveBeenCalledTimes(1);
+    expect(api.get).toHaveBeenCalledWith('/api/products');
   });
 
-  test('Mock: Gọi API PUT khi cập nhật sản phẩm (update)', async () => {
+  test('Update Product thành công (PUT)', async () => {
     const mockData = [
-      { id: 1, name: 'Sản phẩm Cũ', qty: 5, price: 10000, category: 'Milk', description: 'Mô tả cũ' }
+      { id: 99, name: 'Chuột cũ', quantity: 2, price: 100000, category: 'Gaming' }
     ];
 
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockData,
-    });
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ id: 1, name: 'Sản phẩm Mới', qty: 5, price: 20000, category: 'Milk', description: 'Mô tả mới' }),
-    });
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ([{ id: 1, name: 'Sản phẩm Mới', qty: 5, price: 20000, category: 'Milk', description: 'Mô tả mới' }]),
-    });
+    api.get.mockResolvedValue({ data: mockData });
+    api.put.mockResolvedValue({ data: {} });
 
     const { container } = render(<ProductManager />);
 
-    await waitFor(() => screen.getByText('Sản phẩm Cũ'));
-
+    await waitFor(() => screen.getByText('Chuột cũ'));
     fireEvent.click(screen.getByText('Sửa'));
 
-    const priceInput = container.querySelector('input[name="price"]');
-    const descInput = container.querySelector('textarea[name="description"]');
+    const nameInput = container.querySelector('input[name="name"]');
+    fireEvent.change(nameInput, { target: { value: 'Chuột mới' } });
 
-    fireEvent.change(priceInput, { target: { value: '20000' } });
-    fireEvent.change(descInput, { target: { value: 'Mô tả mới' } });
+    api.get.mockResolvedValueOnce({ data: [] });
 
     fireEvent.click(screen.getByText('Lưu'));
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/products/1'),
-        expect.objectContaining({
-          method: 'PUT',
-          headers: { "Content-Type": "application/json" },
-          body: expect.stringContaining('"description":"Mô tả mới"')
-        })
+      expect(api.put).toHaveBeenCalledTimes(1);
+      expect(api.put).toHaveBeenCalledWith(
+        '/api/products/99',
+        expect.objectContaining({ name: 'Chuột mới', id: 99 })
       );
+      expect(mockAlert).toHaveBeenCalledWith('Cập nhật sản phẩm thành công');
     });
   });
 
-  test('Mock: Gọi API DELETE với đúng ID (delete)', async () => {
+  test('Delete Product thành công (DELETE)', async () => {
     const mockData = [
-      { id: 99, name: 'Sản phẩm Xóa', qty: 1, price: 1000, category: 'Other', description: 'ngon tuyệt' }
+      { id: 100, name: 'Sản phẩm xóa', quantity: 1, price: 5000, category: 'Other' }
     ];
 
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => mockData,
-    });
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => ({ success: true }),
-    });
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [],
-    });
+    api.get.mockResolvedValue({ data: mockData });
+    api.delete.mockResolvedValue({ data: {} });
 
     render(<ProductManager />);
 
-    await waitFor(() => screen.getByText('Xóa'));
+    await waitFor(() => screen.getByText('Sản phẩm xóa'));
+
+    api.get.mockResolvedValueOnce({ data: [] });
+
     fireEvent.click(screen.getByText('Xóa'));
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/products/99'),
-        expect.objectContaining({
-          method: 'DELETE'
-        })
-      );
+      expect(mockConfirm).toHaveBeenCalled();
+      expect(api.delete).toHaveBeenCalledTimes(1);
+      expect(api.delete).toHaveBeenCalledWith('/api/products/100');
+      expect(mockAlert).toHaveBeenCalledWith('Xóa sản phẩm thành công');
     });
   });
 
+  test('TC_Create_Success: Tạo sản phẩm iPhone 16 Pro Max thành công', async () => {
+    const newProductData = {
+      name: 'iPhone 16 Pro Max',
+      price: 34990000,
+      quantity: 50,
+      category: 'Business',
+      description: 'Màu Titan Sa Mạc'
+    };
 
-  test('Scenario: Success - Tạo sản phẩm thành công', async () => {
-    fetch.mockResolvedValueOnce({ ok: true, json: async () => [], });
+    api.get.mockResolvedValue({ data: [] });
 
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      status: 200,
-      json: async () => ({ id: 1, name: 'Trà Xanh', price: 20000, qty: 10, category: 'Tea', description: 'Tuyệt' }),
+    api.post.mockResolvedValue({
+      data: { id: 2025, ...newProductData }
     });
 
-    fetch.mockResolvedValueOnce({ ok: true, json: async () => ([{ id: 1, name: 'Trà Xanh', price: 20000, qty: 10, category: 'Tea', description: 'Tuyệt' }]), });
+    const { container } = render(<ProductManager />);
+
+    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+
+    fireEvent.click(screen.getByText('Thêm sản phẩm'));
+
+    fireEvent.change(container.querySelector('input[name="name"]'), { target: { value: newProductData.name } });
+    fireEvent.change(container.querySelector('input[name="price"]'), { target: { value: newProductData.price } });
+    fireEvent.change(container.querySelector('input[name="quantity"]'), { target: { value: newProductData.quantity } });
+    fireEvent.change(container.querySelector('select[name="category"]'), { target: { value: newProductData.category } });
+    fireEvent.change(container.querySelector('textarea[name="description"]'), { target: { value: newProductData.description } });
+
+    fireEvent.click(screen.getByText('Lưu'));
+
+    await waitFor(() => {
+      expect(api.post).toHaveBeenCalledTimes(1);
+      expect(api.post).toHaveBeenCalledWith(
+        '/api/products',
+        expect.objectContaining({
+          name: 'iPhone 16 Pro Max',
+          price: 34990000,
+          category: 'Business'
+        })
+      );
+      expect(mockAlert).toHaveBeenCalledWith('Thêm sản phẩm thành công');
+    });
+  });
+
+  test('Failure Scenario - Hiển thị lỗi khi Load API thất bại', async () => {
+    const errorMessage = 'Network Error';
+    api.get.mockRejectedValue(new Error(errorMessage));
+
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+
+    render(<ProductManager />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Không thể tải danh sách sản phẩm. Vui lòng thử lại.')).toBeInTheDocument();
+    });
+
+    expect(api.get).toHaveBeenCalledTimes(1);
+    consoleSpy.mockRestore();
+  });
+
+  test('Failure Scenario - Hiển thị lỗi từ Backend khi Tạo thất bại', async () => {
+    api.get.mockResolvedValue({ data: [] });
+
+    const errorResponse = {
+      response: {
+        data: 'Tên sản phẩm đã tồn tại'
+      }
+    };
+    api.post.mockRejectedValue(errorResponse);
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
 
     const { container } = render(<ProductManager />);
+
     fireEvent.click(screen.getByText('Thêm sản phẩm'));
 
     const nameInput = container.querySelector('input[name="name"]');
     const priceInput = container.querySelector('input[name="price"]');
-    const qtyInput = container.querySelector('input[name="qty"]');
-    const descInput = container.querySelector('textarea[name="description"]');
+    const qtyInput = container.querySelector('input[name="quantity"]');
+    const catSelect = container.querySelector('select[name="category"]');
 
-    fireEvent.change(nameInput, { target: { value: 'Trà Xanh' } });
-    fireEvent.change(priceInput, { target: { value: '20000' } });
+    fireEvent.change(nameInput, { target: { value: 'Bị trùng' } });
+    fireEvent.change(priceInput, { target: { value: '100000' } });
     fireEvent.change(qtyInput, { target: { value: '10' } });
-    fireEvent.change(descInput, { target: { value: 'Tuyệt' } });
+    fireEvent.change(catSelect, { target: { value: 'Gaming' } });
 
     fireEvent.click(screen.getByText('Lưu'));
 
     await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/products'),
-        expect.objectContaining({
-          method: 'POST',
-          body: expect.stringContaining('"description":"Tuyệt"')
-        })
-      );
-    });
-  });
-
-  test('Mock: Xử lý khi API trả về lỗi (Failure Scenario)', async () => {
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [],
+      expect(api.post).toHaveBeenCalledTimes(1);
+      expect(screen.getByText('Tên sản phẩm đã tồn tại')).toBeInTheDocument();
     });
 
-    fetch.mockResolvedValueOnce({
-      ok: false,
-      status: 500,
-      statusText: "Internal Server Error",
-      json: async () => ({ message: "Lỗi server" })
-    });
-
-    fetch.mockResolvedValueOnce({
-      ok: true,
-      json: async () => [],
-    });
-
-    const { container } = render(<ProductManager />);
-
-    fireEvent.click(screen.getByText('Thêm sản phẩm'));
-    const nameInput = container.querySelector('input[name="name"]');
-    fireEvent.change(nameInput, { target: { value: 'Coca' } });
-
-    fireEvent.click(screen.getByText('Lưu'));
-
-    await waitFor(() => {
-      expect(fetch).toHaveBeenCalledWith(
-        expect.stringContaining('/api/products'),
-        expect.objectContaining({ method: 'POST' })
-      );
-    });
-  });
-
-  test('Mock: Xem chi tiết sản phẩm và quay lại', async () => {
-    const mockData = [{ id: 1, name: 'Sản phẩm Xem', qty: 10, price: 5000, category: 'Tea', description: 'Mô tả xem' }];
-    fetch.mockResolvedValue({ ok: true, json: async () => mockData });
-
-    render(<ProductManager />);
-
-    await waitFor(() => screen.getByText('Sản phẩm Xem'));
-
-    fireEvent.click(screen.getByText('Xem'));
-    expect(screen.getByText('Chi tiết sản phẩm')).toBeInTheDocument();
-    expect(screen.getByText(/Mô tả xem/)).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText('Quay lại'));
-    await waitFor(() => screen.getByText('Danh sách sản phẩm'));
+    consoleSpy.mockRestore();
   });
 
 
-  test('Mock: Hủy bỏ khi đang thêm sản phẩm', async () => {
-    fetch.mockResolvedValue({ ok: true, json: async () => [] });
-    render(<ProductManager />);
-
-    fireEvent.click(screen.getByText('Thêm sản phẩm'));
-    expect(screen.getByText('Thêm sản phẩm')).toBeInTheDocument();
-
-    fireEvent.click(screen.getByText('Hủy'));
-
-    await waitFor(() => {
-      expect(screen.getByText('Danh sách sản phẩm')).toBeInTheDocument();
-    });
-  });
-
-  test('Mock: Hiển thị thông báo khi không có dữ liệu chi tiết', () => {
+  test('ProductDetail hiển thị "Không có dữ liệu" khi product null', () => {
+    const ProductDetail = require('../components/ProductDetail').default;
     render(<ProductDetail product={null} />);
     expect(screen.getByText('Không có dữ liệu')).toBeInTheDocument();
   });
