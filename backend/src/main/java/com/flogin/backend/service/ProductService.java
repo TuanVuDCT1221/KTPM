@@ -75,7 +75,7 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    protected ProductDTO mapToDto(Product product) {
+    private ProductDTO mapToDto(Product product) {
         if(product == null)
             return null;
 
@@ -94,7 +94,7 @@ public class ProductService {
         return dto;
     }
 
-    protected Product mapToEntity(ProductDTO dto) {
+    private Product mapToEntity(ProductDTO dto) {
         if(dto == null)
             return null;
 
