@@ -2,30 +2,33 @@ import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Login from './components/Login';
 import ProductManager from './components/ProductManager';
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const token = localStorage.getItem("token");
 
-  return (
-    <>
-      <Routes>
-        {/* Trang đăng nhập */}
-        <Route path="/login" element={<Login />} />
+    return (
+        <Routes>
+            <Route path="/login" element={<Login />} />
 
-        {/* Trang quản lý sản phẩm */}
-        <Route
-          path="/products"
-          element={token ? <ProductManager /> : <Navigate to="/login" />}
-        />
+            <Route
+                path="/products"
+                element={
+                    <ProtectedRoute>
+                        <ProductManager />
+                    </ProtectedRoute>
+                }
+            />
 
-        {/* Redirect tất cả route không hợp lệ */}
-        <Route
-          path="*"
-          element={<Navigate to={token ? "/products" : "/login"} />}
-        />
-      </Routes>
-    </>
-  );
+            <Route
+                path="*"
+                element={
+                    <ProtectedRoute>
+                        <Navigate to="/products" />
+                    </ProtectedRoute>
+                }
+            />
+        </Routes>
+    );
 }
 
 export default App;
