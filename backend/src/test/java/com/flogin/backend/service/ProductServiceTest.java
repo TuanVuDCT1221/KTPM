@@ -1,10 +1,9 @@
-package com.flogin.backend;
+package com.flogin.backend.service;
 
 import com.flogin.backend.dto.ProductDTO;
 import com.flogin.backend.entity.CategoryType;
 import com.flogin.backend.entity.Product;
 import com.flogin.backend.repository.ProductRepository;
-import com.flogin.backend.service.ProductService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -191,7 +190,7 @@ public class ProductServiceTest {
         when(productRepository.existsByNameAndIdNot("Laptop Dell XPS 13", 1L))
                 .thenReturn(false);
         when(productRepository.save(any(Product.class)))
-                .thenAnswer(invocationOnMock -> invocationOnMock.getArgument(0));
+                .thenAnswer(invocation -> invocation.getArgument(0));
 
         ProductDTO updateDTO = new ProductDTO(
                 null,

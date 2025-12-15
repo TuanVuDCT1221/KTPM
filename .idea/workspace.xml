@@ -5,10 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9b1e23e5-3d98-41f9-9921-1141865ab5b7" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/ProtectedRoute.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/security/SecurityHeadersFilterTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/security/SecurityIntegrationTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/cypress/e2e/security.cy.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/BackendApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/BackendApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/security/JwtAuthenticationFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/flogin/backend/security/JwtAuthenticationFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/AuthServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/service/AuthServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/ProductServiceMockTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/service/ProductServiceMockTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/ProductServiceTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/test/java/com/flogin/backend/service/ProductServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/tests/ProductValidation.test.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/tests/ProductValidation.test.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,8 +24,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="JavaScript File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -42,56 +48,136 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.BackendApplication.executor": "Run",
-    "JUnit.BackendApplicationTests.executor": "Run",
-    "JUnit.ProductServiceTest.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.BackendApplication.executor": "Run",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "D:/GitHub/KTPM_Main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "run.code.analysis.last.selected.profile": "pProject Default",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BackendApplicationTests.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.ProductServiceTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityHeadersFilterTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityIntegrationTest.cors_shouldAllowLocalHost.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityIntegrationTest.csrf_postProductWithoutAuthorization_shouldReturn401.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityIntegrationTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityIntegrationTest.passwordHashing_shouldEncodeAndMatch.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityIntegrationTest.securityHeaders_shouldBePresent.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SecurityIntegrationTest.xssStored_createProductWithScriptTag_shoulStoreAsText.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/GitHub/KTPM_Main/backend/src/test/java/com/flogin/backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;pProject Default&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\JetBrains\\IntelliJ IDEA 2025.2.5\\plugins\\javascript-plugin\\jsLanguageServicesImpl\\external&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\GitHub\KTPM_Main\backend\src\test\java\com\flogin\backend" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\GitHub\KTPM_Main\frontend\src\components" />
       <recent name="D:\GitHub\KTPM_Main\frontend" />
       <recent name="D:\GitHub\KTPM_Main\frontend\src" />
       <recent name="C:\Users\Admin\Desktop\TuanVu\project-KTPM\Flogin-project\backend\src\main\java\com\flogin\backend" />
     </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.flogin.backend.security" />
+      <recent name="com.flogin.backend.service" />
+    </key>
   </component>
-  <component name="RunManager" selected="Spring Boot.BackendApplication">
-    <configuration name="ProductServiceTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.SecurityIntegrationTest">
+    <configuration name="SecurityIntegrationTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="flogin-backend" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.flogin.backend.*" />
+          <option name="PATTERN" value="com.flogin.backend.security.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.flogin.backend" />
-      <option name="MAIN_CLASS_NAME" value="com.flogin.backend.ProductServiceTest" />
+      <option name="PACKAGE_NAME" value="com.flogin.backend.security" />
+      <option name="MAIN_CLASS_NAME" value="com.flogin.backend.security.SecurityIntegrationTest" />
+      <option name="METHOD_NAME" value="securityHeaders_shouldBePresent" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SecurityIntegrationTest.cors_shouldAllowLocalHost" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="flogin-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.flogin.backend.security.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.flogin.backend.security" />
+      <option name="MAIN_CLASS_NAME" value="com.flogin.backend.security.SecurityIntegrationTest" />
+      <option name="METHOD_NAME" value="cors_shouldAllowLocalHost" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SecurityIntegrationTest.csrf_postProductWithoutAuthorization_shouldReturn401" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="flogin-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.flogin.backend.security.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.flogin.backend.security" />
+      <option name="MAIN_CLASS_NAME" value="com.flogin.backend.security.SecurityIntegrationTest" />
+      <option name="METHOD_NAME" value="csrf_postProductWithoutAuthorization_shouldReturn401" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SecurityIntegrationTest.securityHeaders_shouldBePresent" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="flogin-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.flogin.backend.security.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.flogin.backend.security" />
+      <option name="MAIN_CLASS_NAME" value="com.flogin.backend.security.SecurityIntegrationTest" />
+      <option name="METHOD_NAME" value="securityHeaders_shouldBePresent" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="SecurityIntegrationTest.xssStored_createProductWithScriptTag_shoulStoreAsText" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="flogin-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.flogin.backend.security.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.flogin.backend.security" />
+      <option name="MAIN_CLASS_NAME" value="com.flogin.backend.security.SecurityIntegrationTest" />
+      <option name="METHOD_NAME" value="xssStored_createProductWithScriptTag_shoulStoreAsText" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -105,7 +191,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.ProductServiceTest" />
+        <item itemvalue="JUnit.SecurityIntegrationTest" />
+        <item itemvalue="JUnit.SecurityIntegrationTest.securityHeaders_shouldBePresent" />
+        <item itemvalue="JUnit.SecurityIntegrationTest.xssStored_createProductWithScriptTag_shoulStoreAsText" />
+        <item itemvalue="JUnit.SecurityIntegrationTest.csrf_postProductWithoutAuthorization_shouldReturn401" />
+        <item itemvalue="JUnit.SecurityIntegrationTest.cors_shouldAllowLocalHost" />
       </list>
     </recent_temporary>
   </component>
@@ -128,6 +218,14 @@
       <workItem from="1764789933604" duration="1314000" />
       <workItem from="1764827169221" duration="325000" />
       <workItem from="1765399012568" duration="1318000" />
+      <workItem from="1765433076793" duration="12550000" />
+      <workItem from="1765554915355" duration="9725000" />
+      <workItem from="1765640577756" duration="6868000" />
+      <workItem from="1765685579341" duration="1728000" />
+      <workItem from="1765691529197" duration="5563000" />
+      <workItem from="1765733873037" duration="7285000" />
+      <workItem from="1765787238402" duration="2245000" />
+      <workItem from="1765813954758" duration="7725000" />
     </task>
     <servers />
   </component>

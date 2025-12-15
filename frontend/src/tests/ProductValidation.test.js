@@ -141,15 +141,5 @@ describe("Validate Product", () => {
         expect(Object.keys(errors).length).toBe(0);
     });
 
-    // it("TC13: Price không phải số -> báo lỗi price", () => {
-    //     const product = {
-    //         ...baseProduct,
-    //         price: "abc",
-    //     };
-    //
-    //     const errors = validateProduct(product);
-    //
-    //     expect(errors.price).toBe("Giá phải là số hợp lệ");
-    // });
 });
 

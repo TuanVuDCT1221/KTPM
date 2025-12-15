@@ -1,11 +1,10 @@
-package com.flogin.backend;
+package com.flogin.backend.service;
 
 import com.flogin.backend.dto.LoginRequest;
 import com.flogin.backend.dto.LoginResponse;
 import com.flogin.backend.entity.User;
 import com.flogin.backend.repository.UserRepository;
 import com.flogin.backend.security.JwtUtil;
-import com.flogin.backend.service.AuthService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

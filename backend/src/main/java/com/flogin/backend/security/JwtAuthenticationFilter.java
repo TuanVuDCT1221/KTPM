@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        String path = request.getServletPath();
+        String path = request.getRequestURI();
 
         // Không check JWT cho auth endpoints
         if (path.startsWith("/auth")) {
